@@ -1,6 +1,8 @@
 // Proto service
 syntax="proto3";
 
+option go_package = "github.com/amirhnajafiz/Stan-Gee";
+
 // Main service
 service StanG {
   rpc Sub(Send) returns (stream Catch) {} // Subscribe method
