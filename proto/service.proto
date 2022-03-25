@@ -1,25 +1,31 @@
+// Proto service
 syntax="proto3";
 
-service RouterService {
-  rpc GetMessages(GetRequest) returns (stream GetResponse) {}
-  rpc PutMessages(stream PutRequest) returns (PutResponse) {}
+// Main service
+service StanG {
+  rpc Sub(Send) returns (stream Catch) {} // Subscribe method
+  rpc Put(stream Data) returns (Response) {} // Publish method
 }
 
-message GetRequest {
-  string topic = 1;
+// Send type
+message Send {
+  string topic = 1; // NATS topic
+  string type = 2;  // Subscribe type
 }
 
-message GetResponse {
-  string topic = 1;
-  string content = 2;
+// Data type
+message Data {
+  string topic = 1; // NATS topic
+  string content = 2; // Publish data
 }
 
-message PutRequest {
-  string topic = 1;
-  string content = 2;
+// Catch type
+message Catch {
+  string content = 1; // NATS sub content
 }
 
-message PutResponse {
-  int32 status = 1;
-  string message = 2;
+// Response type
+message Response {
+  int32 status = 1; // Response status
+  string message = 2; // Response message
 }
