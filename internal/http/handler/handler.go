@@ -1,5 +1,24 @@
 package handler
 
 import (
-	_ "github.com/amirhnajafiz/Stan-Gee/proto"
+	"context"
+
+	"github.com/amirhnajafiz/Stan-Gee/proto"
 )
+
+func Sub(ctx context.Context, in *proto.Send) (*proto.Catch, error) {
+	// send messages via nats
+
+	return &proto.Catch{
+		Content: in.Topic,
+	}, nil
+}
+
+func Put(ctx context.Context, in *proto.Data) (*proto.Response, error) {
+	// get message from nats
+
+	return &proto.Response{
+		Status:  1,
+		Message: "test",
+	}, nil
+}
