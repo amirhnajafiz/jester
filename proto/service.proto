@@ -1,7 +1,8 @@
 // Proto service
 syntax="proto3";
 
-option go_package = "github.com/amirhnajafiz/Stan-Gee";
+package service;
+option go_package = "./";
 
 // Main service
 service StanG {
