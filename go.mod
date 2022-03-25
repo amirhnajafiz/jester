@@ -1,4 +1,4 @@
-module amirhnajafiz/Stan-Gee
+module github.com/amirhnajafiz/Stan-Gee
 
 go 1.17
 

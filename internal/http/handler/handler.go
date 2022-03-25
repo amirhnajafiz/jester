@@ -1,5 +1,5 @@
 package handler
 
-func Sub() {
-
-}
+import (
+	_ "github.com/amirhnajafiz/Stan-Gee/proto"
+)
