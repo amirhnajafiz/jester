@@ -1,1 +1,25 @@
 syntax="proto3";
+
+service RouterService {
+  rpc GetMessages(GetRequest) returns (stream GetResponse) {}
+  rpc PutMessages(stream PutRequest) returns (PutResponse) {}
+}
+
+message GetRequest {
+  string topic = 1;
+}
+
+message GetResponse {
+  string topic = 1;
+  string content = 2;
+}
+
+message PutRequest {
+  string topic = 1;
+  string content = 2;
+}
+
+message PutResponse {
+  int32 status = 1;
+  string message = 2;
+}
