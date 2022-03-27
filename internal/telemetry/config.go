@@ -8,7 +8,7 @@ type Config struct {
 type Trace struct {
 	Enabled bool `koanf:"enabled"`
 	Agent   `koanf:"agent"`
-	Ration  float64 `koanf:"ratio"`
+	Ratio   float64 `koanf:"ratio"`
 }
 
 type Agent struct {
