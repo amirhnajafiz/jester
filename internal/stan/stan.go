@@ -6,8 +6,8 @@ import (
 	"github.com/nats-io/stan.go"
 )
 
-func Connect(ClusterID string, ClientID string) stan.Conn {
-	sc, err := stan.Connect(ClusterID, ClientID)
+func Connect(cfg Config) stan.Conn {
+	sc, err := stan.Connect(cfg.ClusterId, cfg.ClientId)
 	if err != nil {
 		log.Fatalf("failed to connect to nats-stream server: %v\n", err)
 	}
