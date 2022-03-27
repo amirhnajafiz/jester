@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"github.com/amirhnajafiz/Stan-Gee/internal/http/stan"
+	"github.com/amirhnajafiz/Stan-Gee/internal/telemetry"
 	"log"
 
 	"github.com/amirhnajafiz/Stan-Gee/internal/cmd/server"
@@ -9,7 +11,12 @@ import (
 
 func Execute() {
 	cfg := config.Load()
-	s, l := server.NewServer(cfg.Server)
+	tracer := telemetry.New(cfg.Telemetry.Trace)
+	telemetry.NewServer(cfg.Telemetry.Metric).Start()
+
+	metric := stan.NewMetrics()
+
+	s, l := server.NewServer(cfg.Server, tracer, metric)
 
 	err := s.Serve(l)
 	if err != nil {

@@ -37,7 +37,7 @@ func New(cfg Trace) trace.Tracer {
 
 	bsp := sdkTrace.NewBatchSpanProcessor(exporter)
 	tp := sdkTrace.NewTracerProvider(
-		sdkTrace.WithSampler(sdkTrace.ParentBased(sdkTrace.TraceIDRatioBased(cfg.Ration))),
+		sdkTrace.WithSampler(sdkTrace.ParentBased(sdkTrace.TraceIDRatioBased(cfg.Ratio))),
 		sdkTrace.WithSpanProcessor(bsp),
 		sdkTrace.WithResource(res),
 	)

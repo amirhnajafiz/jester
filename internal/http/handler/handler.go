@@ -4,12 +4,16 @@ import (
 	"context"
 	"log"
 
+	stanMetric "github.com/amirhnajafiz/Stan-Gee/internal/http/stan"
 	"github.com/amirhnajafiz/Stan-Gee/proto"
 	"github.com/nats-io/stan.go"
+	"go.opentelemetry.io/otel/trace"
 )
 
 type Handler struct {
-	Stan stan.Conn
+	Metrics stanMetric.Metrics
+	Tracer  trace.Tracer
+	Stan    stan.Conn
 }
 
 func (h *Handler) Sub(in *proto.Send, stream proto.StanG_SubServer) error {
