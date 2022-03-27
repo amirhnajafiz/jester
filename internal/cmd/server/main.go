@@ -5,6 +5,7 @@ import (
 	"net"
 
 	"github.com/amirhnajafiz/Stan-Gee/internal/http/handler"
+	"github.com/amirhnajafiz/Stan-Gee/internal/stan"
 	"github.com/amirhnajafiz/Stan-Gee/proto"
 	"google.golang.org/grpc"
 )
@@ -16,7 +17,7 @@ func NewServer(port string) (*grpc.Server, net.Listener) {
 	}
 
 	s := grpc.NewServer()
-	proto.RegisterStanGServer(s, &handler.Handler{})
+	proto.RegisterStanGServer(s, &handler.Handler{Stan: stan.Connect("", "")})
 
 	return s, lis
 }

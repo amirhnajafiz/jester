@@ -4,9 +4,12 @@ import (
 	"context"
 
 	"github.com/amirhnajafiz/Stan-Gee/proto"
+	"github.com/nats-io/stan.go"
 )
 
-type Handler struct{}
+type Handler struct {
+	Stan stan.Conn
+}
 
 func (h *Handler) Sub(in *proto.Send, stream proto.StanG_SubServer) error {
 	// send messages via nats
