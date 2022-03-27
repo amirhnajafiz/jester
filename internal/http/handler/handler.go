@@ -6,7 +6,9 @@ import (
 	"github.com/amirhnajafiz/Stan-Gee/proto"
 )
 
-func (s *server.Server) Sub(ctx context.Context, in *proto.Send) (*proto.Catch, error) {
+type Handler struct{}
+
+func (h *Handler) Sub(ctx context.Context, in *proto.Send) (*proto.Catch, error) {
 	// send messages via nats
 
 	return &proto.Catch{
@@ -14,7 +16,7 @@ func (s *server.Server) Sub(ctx context.Context, in *proto.Send) (*proto.Catch, 
 	}, nil
 }
 
-func (s *server.Server) Put(ctx context.Context, in *proto.Data) (*proto.Response, error) {
+func (h *Handler) Put(ctx context.Context, in *proto.Data) (*proto.Response, error) {
 	// get message from nats
 
 	return &proto.Response{

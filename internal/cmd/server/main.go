@@ -5,7 +5,6 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/profiling/proto"
 )
 
 type Server struct {
@@ -18,6 +17,6 @@ func NewServer(port string) {
 	}
 
 	s := grpc.NewServer()
-	proto.RegisterProfilingServer(s, &Server{})
+	proto.
 
 }
