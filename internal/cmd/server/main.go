@@ -5,7 +5,7 @@ import (
 	"net"
 
 	"github.com/amirhnajafiz/Stan-Gee/internal/http/handler"
-	"github.com/amirhnajafiz/Stan-Gee/internal/stan"
+	"github.com/amirhnajafiz/Stan-Gee/internal/http/stan"
 	"github.com/amirhnajafiz/Stan-Gee/proto"
 	"google.golang.org/grpc"
 )
