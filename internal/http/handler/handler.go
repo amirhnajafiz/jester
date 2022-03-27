@@ -32,9 +32,16 @@ func (h *Handler) Sub(in *proto.Send, stream proto.StanG_SubServer) error {
 
 func (h *Handler) Put(ctx context.Context, in *proto.Data) (*proto.Response, error) {
 	// get message from nats
+	err := h.Stan.Publish(in.Topic, []byte(in.Content))
+	if err != nil {
+		return &proto.Response{
+			Status:  -1,
+			Message: err.Error(),
+		}, err
+	}
 
 	return &proto.Response{
 		Status:  1,
-		Message: "test",
+		Message: "Successfully sent",
 	}, nil
 }
