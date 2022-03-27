@@ -1,8 +1,9 @@
 package stan
 
 import (
-	"github.com/nats-io/stan.go"
 	"log"
+
+	"github.com/nats-io/stan.go"
 )
 
 func Connect(ClusterID string, ClientID string) stan.Conn {
