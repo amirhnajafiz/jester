@@ -23,6 +23,7 @@ require (
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	go.opentelemetry.io/otel v1.6.0 // indirect
+	go.opentelemetry.io/otel/exporters/jaeger v1.6.0 // indirect
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.6.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.6.0 // indirect
 	go.opentelemetry.io/otel/trace v1.6.0 // indirect
