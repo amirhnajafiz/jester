@@ -3,13 +3,18 @@ package config
 import (
 	"log"
 
+	"github.com/amirhnajafiz/Stan-Gee/internal/cmd/server"
 	"github.com/knadh/koanf"
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/providers/structs"
 )
 
-func Default() Config {
+type Config struct {
+	Server server.Config `koanf:"server"`
+}
+
+func Load() Config {
 	var instance Config
 
 	k := koanf.New(".")
