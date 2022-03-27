@@ -1,6 +1,8 @@
 package telemetry
 
 import (
+	"errors"
+	"log"
 	"net/http"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -23,4 +25,12 @@ func NewServer(cfg Metric) Server {
 		address: cfg.Address,
 		srv:     srv,
 	}
+}
+
+func (s Server) Start() {
+	go func() {
+		if err := http.ListenAndServe(s.address, s.srv); !errors.Is(err, http.ErrServerClosed) {
+			log.Fatalf("metric server initiation failed: %v\n", err)
+		}
+	}()
 }
