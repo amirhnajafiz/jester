@@ -7,9 +7,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-type Server struct {
-}
-
 func NewServer(port string) {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
@@ -17,6 +14,5 @@ func NewServer(port string) {
 	}
 
 	s := grpc.NewServer()
-	proto.
 
 }

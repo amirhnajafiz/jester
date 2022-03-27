@@ -7,7 +7,7 @@ option go_package = "./";
 // Main service
 service StanG {
   rpc Sub(Send) returns (stream Catch) {} // Subscribe method
-  rpc Put(stream Data) returns (Response) {} // Publish method
+  rpc Put(Data) returns (Response) {} // Publish method
 }
 
 // Send type

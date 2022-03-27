@@ -9,6 +9,10 @@
 package proto
 
 import (
+	context "context"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -251,14 +255,13 @@ var file_service_proto_rawDesc = []byte{
 	0x65, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x05, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73,
 	0x73, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73,
-	0x61, 0x67, 0x65, 0x32, 0x5e, 0x0a, 0x05, 0x53, 0x74, 0x61, 0x6e, 0x47, 0x12, 0x28, 0x0a, 0x03,
+	0x61, 0x67, 0x65, 0x32, 0x5c, 0x0a, 0x05, 0x53, 0x74, 0x61, 0x6e, 0x47, 0x12, 0x28, 0x0a, 0x03,
 	0x53, 0x75, 0x62, 0x12, 0x0d, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x53, 0x65,
 	0x6e, 0x64, 0x1a, 0x0e, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x43, 0x61, 0x74,
-	0x63, 0x68, 0x22, 0x00, 0x30, 0x01, 0x12, 0x2b, 0x0a, 0x03, 0x50, 0x75, 0x74, 0x12, 0x0d, 0x2e,
+	0x63, 0x68, 0x22, 0x00, 0x30, 0x01, 0x12, 0x29, 0x0a, 0x03, 0x50, 0x75, 0x74, 0x12, 0x0d, 0x2e,
 	0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x1a, 0x11, 0x2e, 0x73,
 	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x00, 0x28, 0x01, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x00, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -365,4 +368,148 @@ func file_service_proto_init() {
 	file_service_proto_rawDesc = nil
 	file_service_proto_goTypes = nil
 	file_service_proto_depIdxs = nil
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConnInterface
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion6
+
+// StanGClient is the client API for StanG service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type StanGClient interface {
+	Sub(ctx context.Context, in *Send, opts ...grpc.CallOption) (StanG_SubClient, error)
+	Put(ctx context.Context, in *Data, opts ...grpc.CallOption) (*Response, error)
+}
+
+type stanGClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewStanGClient(cc grpc.ClientConnInterface) StanGClient {
+	return &stanGClient{cc}
+}
+
+func (c *stanGClient) Sub(ctx context.Context, in *Send, opts ...grpc.CallOption) (StanG_SubClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_StanG_serviceDesc.Streams[0], "/service.StanG/Sub", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &stanGSubClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type StanG_SubClient interface {
+	Recv() (*Catch, error)
+	grpc.ClientStream
+}
+
+type stanGSubClient struct {
+	grpc.ClientStream
+}
+
+func (x *stanGSubClient) Recv() (*Catch, error) {
+	m := new(Catch)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *stanGClient) Put(ctx context.Context, in *Data, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/service.StanG/Put", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// StanGServer is the server API for StanG service.
+type StanGServer interface {
+	Sub(*Send, StanG_SubServer) error
+	Put(context.Context, *Data) (*Response, error)
+}
+
+// UnimplementedStanGServer can be embedded to have forward compatible implementations.
+type UnimplementedStanGServer struct {
+}
+
+func (*UnimplementedStanGServer) Sub(*Send, StanG_SubServer) error {
+	return status.Errorf(codes.Unimplemented, "method Sub not implemented")
+}
+func (*UnimplementedStanGServer) Put(context.Context, *Data) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Put not implemented")
+}
+
+func RegisterStanGServer(s *grpc.Server, srv StanGServer) {
+	s.RegisterService(&_StanG_serviceDesc, srv)
+}
+
+func _StanG_Sub_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(Send)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(StanGServer).Sub(m, &stanGSubServer{stream})
+}
+
+type StanG_SubServer interface {
+	Send(*Catch) error
+	grpc.ServerStream
+}
+
+type stanGSubServer struct {
+	grpc.ServerStream
+}
+
+func (x *stanGSubServer) Send(m *Catch) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _StanG_Put_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Data)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StanGServer).Put(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.StanG/Put",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StanGServer).Put(ctx, req.(*Data))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _StanG_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "service.StanG",
+	HandlerType: (*StanGServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Put",
+			Handler:    _StanG_Put_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Sub",
+			Handler:       _StanG_Sub_Handler,
+			ServerStreams: true,
+		},
+	},
+	Metadata: "service.proto",
 }
