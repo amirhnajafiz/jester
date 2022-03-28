@@ -143,3 +143,11 @@ services:
       - "38222:8222"
     volumes:
       - "./nats-streaming-3:/data"
+
+networks:
+  main:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.255.0/24
+      driver: default
