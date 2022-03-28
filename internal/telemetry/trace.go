@@ -1,11 +1,11 @@
 package telemetry
 
 import (
-	"go.opentelemetry.io/otel/propagation"
 	"log"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/jaeger"
+	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdkTrace "go.opentelemetry.io/otel/sdk/trace"
 	semConv "go.opentelemetry.io/otel/semConv/v1.4.0"

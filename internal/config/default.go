@@ -2,7 +2,7 @@ package config
 
 import (
 	"github.com/amirhnajafiz/Stan-Gee/internal/cmd/server"
-	"github.com/amirhnajafiz/Stan-Gee/internal/stan"
+	"github.com/amirhnajafiz/Stan-Gee/internal/http/stan"
 	"github.com/amirhnajafiz/Stan-Gee/internal/telemetry"
 )
 

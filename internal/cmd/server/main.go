@@ -1,13 +1,13 @@
 package server
 
 import (
-	"go.opentelemetry.io/otel/trace"
 	"log"
 	"net"
 
 	"github.com/amirhnajafiz/Stan-Gee/internal/http/handler"
 	"github.com/amirhnajafiz/Stan-Gee/internal/http/stan"
 	"github.com/amirhnajafiz/Stan-Gee/proto"
+	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
 )
 
