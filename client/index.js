@@ -3,7 +3,7 @@ let grpc = require('@grpc/grpc-js');
 let protoLoader = require('@grpc/proto-loader');
 
 // out proto file path
-let PROTO_PATH = __dirname + '../proto/service.proto';
+let PROTO_PATH = __dirname + '/../proto/service.proto';
 
 // Suggested options for similarity to existing grpc.load behavior
 let packageDefinition = protoLoader.loadSync(
@@ -13,7 +13,6 @@ let packageDefinition = protoLoader.loadSync(
         longs: String,
         enums: String,
         defaults: true,
-        oneofs: true
     }
 );
 
