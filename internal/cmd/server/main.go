@@ -17,10 +17,15 @@ func NewServer(cfg Config, trace trace.Tracer, metric stan.Metrics) (*grpc.Serve
 		log.Fatalf("failed to listen : %v\n", err.Error())
 	}
 
+	c := stan.Connect(cfg.Stan)
+	if c == nil {
+		metric.ConnectionErrors.Add(1)
+	}
+
 	s := grpc.NewServer()
 	proto.RegisterStanGServer(s, &handler.Handler{
 		Tracer:  trace,
-		Stan:    stan.Connect(cfg.Stan),
+		Stan:    c,
 		Metrics: metric,
 	})
 

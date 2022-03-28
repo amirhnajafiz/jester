@@ -23,7 +23,11 @@ func (h *Handler) Sub(in *proto.Send, stream proto.StanG_SubServer) error {
 			Content: string(msg.Data),
 		})
 		if err != nil {
+			h.Metrics.FailedSub.Add(1)
+
 			log.Fatalf("faield to subscribe: %v\n", err)
+		} else {
+			h.Metrics.SuccessfulSub.Add(1)
 		}
 	})
 
@@ -38,11 +42,15 @@ func (h *Handler) Put(_ context.Context, in *proto.Data) (*proto.Response, error
 	// get message from nats
 	err := h.Stan.Publish(in.Topic, []byte(in.Content))
 	if err != nil {
+		h.Metrics.FailedPut.Add(1)
+
 		return &proto.Response{
 			Status:  -1,
 			Message: err.Error(),
 		}, err
 	}
+
+	h.Metrics.SuccessfulPut.Add(1)
 
 	return &proto.Response{
 		Status:  1,
