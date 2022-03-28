@@ -15,6 +15,7 @@ import (
 
 func NewServer(cfg Config, trace trace.Tracer, metric stan.Metrics) (*grpc.Server, net.Listener) {
 	_, span := trace.Start(context.Background(), "server.new.server")
+	defer span.End()
 
 	lis, err := net.Listen(cfg.Type, cfg.Port)
 	if err != nil {

@@ -17,6 +17,9 @@ type Handler struct {
 }
 
 func (h *Handler) Sub(in *proto.Send, stream proto.StanG_SubServer) error {
+	_, span := h.Tracer.Start(context.Background(), "http.handler.subscribe")
+	defer span.End()
+
 	// send messages via nats
 	sub, _ := h.Stan.Subscribe(in.Topic, func(msg *stan.Msg) {
 		err := stream.Send(&proto.Catch{
@@ -39,6 +42,9 @@ func (h *Handler) Sub(in *proto.Send, stream proto.StanG_SubServer) error {
 }
 
 func (h *Handler) Put(_ context.Context, in *proto.Data) (*proto.Response, error) {
+	_, span := h.Tracer.Start(context.Background(), "http.handler.publish")
+	defer span.End()
+
 	// get message from nats
 	err := h.Stan.Publish(in.Topic, []byte(in.Content))
 	if err != nil {
