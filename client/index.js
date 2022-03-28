@@ -2,7 +2,7 @@
 const grpc = require('@grpc/grpc-js');
 
 // out proto file path
-let PROTO_PATH = __dirname + '/../proto/service.proto';
+const PROTO_PATH = '../proto/service.proto';
 
 // import proto loader
 let protoLoader = require('@grpc/proto-loader');
