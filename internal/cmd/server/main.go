@@ -1,25 +1,37 @@
 package server
 
 import (
+	"context"
 	"log"
 	"net"
 
 	"github.com/amirhnajafiz/Stan-Gee/internal/http/handler"
 	"github.com/amirhnajafiz/Stan-Gee/internal/http/stan"
 	"github.com/amirhnajafiz/Stan-Gee/proto"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
 )
 
 func NewServer(cfg Config, trace trace.Tracer, metric stan.Metrics) (*grpc.Server, net.Listener) {
+	_, span := trace.Start(context.Background(), "server.new.server")
+
 	lis, err := net.Listen(cfg.Type, cfg.Port)
 	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+
 		log.Fatalf("failed to listen : %v\n", err.Error())
 	}
 
-	c := stan.Connect(cfg.Stan)
-	if c == nil {
+	c, err := stan.Connect(cfg.Stan)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+
 		metric.ConnectionErrors.Add(1)
+
+		log.Fatalf("failed to connect to nats-stream server: %v\n", err)
 	}
 
 	s := grpc.NewServer()
