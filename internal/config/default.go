@@ -12,7 +12,7 @@ func Default() Config {
 			Type: "tcp",
 			Port: ":8080",
 			Stan: stan.Config{
-				ClusterId: "",
+				ClusterId: "nats-streaming",
 				ClientId:  "",
 			},
 		},
