@@ -9,6 +9,7 @@
   "author": "amirhnajafiz",
   "license": "ISC",
   "dependencies": {
+    "@grpc/grpc-js": "^1.5.10",
     "express": "^4.17.3"
   }
 }
