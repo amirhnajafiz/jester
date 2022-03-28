@@ -16,6 +16,6 @@ let packageDefinition = protoLoader.loadSync(
     }
 );
 
-let protoDescriptor = grpc.loadPackageDefinition(packageDefinition)
 // The protoDescriptor object has the full package hierarchy
-let service = protoDescriptor.constructor;
+let protoDescriptor = grpc.loadPackageDefinition(packageDefinition)
+
