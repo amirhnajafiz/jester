@@ -7,6 +7,7 @@ import (
 	stanMetric "github.com/amirhnajafiz/Stan-Gee/internal/http/stan"
 	"github.com/amirhnajafiz/Stan-Gee/proto"
 	"github.com/nats-io/stan.go"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -26,6 +27,9 @@ func (h *Handler) Sub(in *proto.Send, stream proto.StanG_SubServer) error {
 			Content: string(msg.Data),
 		})
 		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, err.Error())
+
 			h.Metrics.FailedSub.Add(1)
 
 			log.Fatalf("faield to subscribe: %v\n", err)
@@ -48,6 +52,9 @@ func (h *Handler) Put(_ context.Context, in *proto.Data) (*proto.Response, error
 	// get message from nats
 	err := h.Stan.Publish(in.Topic, []byte(in.Content))
 	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+
 		h.Metrics.FailedPut.Add(1)
 
 		return &proto.Response{
