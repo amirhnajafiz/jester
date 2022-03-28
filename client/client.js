@@ -35,24 +35,4 @@ const client = new stanG(
     grpc.credentials.createInsecure()
 )
 
-// client methods
-client.sub(
-    {
-        topic: topic,
-        type: type
-    },
-    (error, res) => {
-        if (!error) throw error
-        console.log(res)
-    }
-)
-
-client.put(
-    {
-        content: "Test text"
-    },
-    (error, res) => {
-        if (!error) throw error
-        console.log(res)
-    }
-)
+export default client
