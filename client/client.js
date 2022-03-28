@@ -26,8 +26,6 @@ let packageDefinition = protoLoader.loadSync(
 const stanG = grpc.loadPackageDefinition(packageDefinition).service.StanG;
 
 const address = "localhost:8080";
-const topic = "topic";
-const type = "original";
 
 // create a client
 const client = new stanG(
