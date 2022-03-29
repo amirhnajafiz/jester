@@ -11,7 +11,22 @@ const danger_test = '' +
     '</svg>' +
     'Wait';
 
-let flag = true
+const URL = '127.0.0.1:5000/test';
+let flag = true;
+
+function request() {
+    fetch(URL)
+        .then(async (response) => {
+            document.getElementById("result").innerText = await response.json();
+        })
+        .catch((error) => {
+            document.getElementById("result").innerText = "Problem in testing ..."
+            console.error(error)
+        })
+
+    setTimeout(reset, 2000)
+}
+
 
 function begin() {
     if (!flag)
@@ -25,7 +40,7 @@ function begin() {
     el.classList.add("btn-danger")
     el.innerHTML = danger_test;
 
-    setTimeout(reset, 3000)
+    request()
 }
 
 function reset() {
