@@ -11,11 +11,10 @@ const danger_test = '' +
     '</svg>' +
     'Wait';
 
-const URL = '127.0.0.1:5000/test';
 let flag = true;
 
 function request() {
-    fetch(URL)
+    fetch(process.env.URL)
         .then(async (response) => {
             document.getElementById("result").innerText = await response.json();
         })
