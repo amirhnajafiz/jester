@@ -1,9 +1,9 @@
-import client from "./client";
+import { CreateClient } from "./client";
 
 const express = require('express')
 const app = express()
 const port = 3000
-const cli = client
+const cli = CreateClient()
 
 app.get('/sub', (req, res) => {
     cli.sub()
