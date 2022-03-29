@@ -1,0 +1,9 @@
+.my-btn {
+    width: 150px;
+}
+
+.cool-border {
+    border: 2px solid #c1c1c1;
+    border-radius: 5px;
+    padding: 20px 25px;
+}
