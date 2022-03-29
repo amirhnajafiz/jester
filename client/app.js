@@ -1,22 +1,22 @@
+// client creation method
 import { CreateClient } from "./client";
 
+// setup express app
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 5000
+
+// our client
 const cli = CreateClient()
 
-app.get('/sub', (req, res) => {
-    cli.sub()
+// routes
+app.get('/check', (req, res) => {
+    const topic = req.query.get("topic")
 
-    res.send('Hello World!')
+    res.send({"topic": topic})
 })
 
-app.get('/pub', (req, res) => {
-    cli.pub()
-
-    res.send('Temp')
-})
-
+// starting the application
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
