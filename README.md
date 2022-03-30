@@ -12,6 +12,30 @@ and a gRPC server.
 ## How to use?
 
 ## Building other clients yourself
+The **service.proto** file in _./proto_ directory describes the logic of our application,
+you can make your own clients in different programming languages.
+
+#### Golang
+```shell
+protoc -I proto/ proto/service.proto --go_out=plugins=grpc:proto
+```
+
+#### Javascript
+```shell
+protoc -I proto/ proto/service.proto --js_out=library=grpc:proto
+```
+
+#### Java
+```shell
+protoc -I proto/ proto/service.proto --java_out=build/proto
+```
+
+#### Python
+```shell
+protoc -I proto/ proto/service.proto --python_out=build/proto
+```
+
+And ....
 
 ## Deployment
 If you want to deploy this project on kubernetes, just use the following command:
@@ -21,5 +45,3 @@ helm install ./deployments/stan-gee
 ```
 
 With providing the _application.yaml_ so you can set for cluster **ArgoCD**
-
-protoc -I proto/ proto/[file].proto --go_out=plugins=grpc:proto
