@@ -10,6 +10,46 @@ and a gRPC server.
 ## How does it work?
 
 ## How to use?
+Main service methods:
+```protobuf
+service StanG {
+  rpc Sub(Send) returns (stream Catch) {}
+  rpc Put(Data) returns (Response) {}
+}
+```
+
+### Subscribe
+Send data for subscribe:
+```protobuf
+message Send {
+  string topic = 1; // NATS topic
+  string type = 2;  // Subscribe type
+}
+```
+
+Catch response for subscribe:
+```protobuf
+message Catch {
+  string content = 1; // NATS sub content
+}
+```
+
+### Publish
+Request body for publish:
+```protobuf
+message Data {
+  string topic = 1; // NATS topic
+  string content = 2; // Publish data
+}
+```
+
+Response of publish:
+```protobuf
+message Response {
+  int32 status = 1; // Response status
+  string message = 2; // Response message
+}
+```
 
 ## Building other clients yourself
 The **service.proto** file in _./proto_ directory describes the logic of our application,
