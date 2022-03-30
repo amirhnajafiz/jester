@@ -8,6 +8,11 @@ between clients of different programming languages by using proto-buffers
 and a gRPC server.
 
 ## How does it work?
+This service connects to three nats-streaming services.<br />
+Clients will subscribe to our gRPC, which subscribes on the stan service. Then
+the clients will send their data over the publish method on the stan service, waiting
+for the other clients to receive their message on the topic that
+they defined in the request.
 
 ## How to use?
 Main service methods:
