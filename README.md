@@ -11,6 +11,15 @@ and a gRPC server.
 
 ## How to use?
 
+## Building other clients yourself
+
 ## Deployment
+If you want to deploy this project on kubernetes, just use the following command:
+```shell
+helm dep up ./deployments/stan-gee
+helm install ./deployments/stan-gee
+```
+
+With providing the _application.yaml_ so you can set for cluster **ArgoCD**
 
 protoc -I proto/ proto/[file].proto --go_out=plugins=grpc:proto
