@@ -1,11 +1,13 @@
 # Stan-Gee Client
 A simple client for testing our stan-gee health and status.
 
-<img src="./assets/main.png" />
+<img src="./assets/main.jpeg" />
 
 ## What does this client do?
 This client makes a connection to our Stan-Gee gRPC service
 and then provides a testing environment, so you can check the service.
+
+<img src="./assets/main.png" />
 
 ## Deployment
 To deploy this project on virtual machine using docker and nginx, use the following commands.<br />
