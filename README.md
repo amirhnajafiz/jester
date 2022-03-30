@@ -84,6 +84,8 @@ protoc -I proto/ proto/service.proto --python_out=build/proto
 
 And ....
 
+You can also [check](client/README.md) my client implemented in **JavaScript** programming language.
+
 ## Deployment
 If you want to deploy this project on kubernetes, just use the following command:
 ```shell
