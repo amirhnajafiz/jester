@@ -1,6 +1,8 @@
 # Stan-Gee
 Nats streaming service in Golang, With a JS client.
 
+<img src="./assets/main.png" width="700" />
+
 ## What is this service for?
 This is a gRPC service to send and receive messages over a nats-streaming
 server. The main idea behind this service is to make a communication system
