@@ -1,4 +1,4 @@
-package telemetry
+package metrics
 
 type Config struct {
 	Metric Metric `koanf:"metric"`
