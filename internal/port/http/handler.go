@@ -18,10 +18,17 @@ func (h Handler) cover(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h Handler) Register(port int) error {
-	http.HandleFunc("/healthz", h.healthy)
-	http.HandleFunc("/cover", h.cover)
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/healthz", h.healthy)
+	mux.HandleFunc("/cover", h.cover)
+
+	server := &http.Server{
+		Addr:    fmt.Sprintf(":%d", port),
+		Handler: mux,
+	}
 
 	log.Println(fmt.Sprintf("http server running on %d...", port))
 
-	return http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	return server.ListenAndServe()
 }
