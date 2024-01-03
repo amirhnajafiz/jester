@@ -3,7 +3,7 @@ package config
 import (
 	"log"
 
-	"github.com/amirhnajafiz/jester/internal/telemetry"
+	"github.com/amirhnajafiz/jester/internal/telemetry/metrics"
 
 	"github.com/knadh/koanf"
 	"github.com/knadh/koanf/parsers/yaml"
@@ -12,7 +12,7 @@ import (
 )
 
 type Config struct {
-	Telemetry telemetry.Config `koanf:"telemetry"`
+	Metrics metrics.Config `koanf:"metrics"`
 }
 
 func Load() Config {
