@@ -1,6 +1,6 @@
-module github.com/amirhnajafiz/Stan-Gee
+module github.com/amirhnajafiz/jester
 
-go 1.17
+go 1.20
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
