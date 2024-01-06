@@ -1,16 +1,15 @@
 package config
 
 import (
-	"github.com/amirhnajafiz/jester/internal/telemetry"
+	"github.com/amirhnajafiz/jester/internal/telemetry/metrics"
 )
 
 func Default() Config {
 	return Config{
-		Telemetry: telemetry.Config{
-			Metric: telemetry.Metric{
-				Address: ":8080",
-				Enabled: true,
-			},
+		HTTPPort: 8080,
+		Metrics: metrics.Config{
+			Address: ":8081",
+			Enabled: true,
 		},
 	}
 }
