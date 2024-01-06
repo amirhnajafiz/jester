@@ -12,10 +12,11 @@ import (
 )
 
 type Config struct {
-	Metrics metrics.Config `koanf:"metrics"`
+	HTTPPort int            `koanf:"http_port"`
+	Metrics  metrics.Config `koanf:"metrics"`
 }
 
-func Load() Config {
+func Load(path string) Config {
 	var instance Config
 
 	k := koanf.New(".")
@@ -26,7 +27,7 @@ func Load() Config {
 	}
 
 	// load configs file
-	if err := k.Load(file.Provider("config.yaml"), yaml.Parser()); err != nil {
+	if err := k.Load(file.Provider(path), yaml.Parser()); err != nil {
 		log.Fatalf("error loading config.yaml file: %v\n", err)
 	}
 
