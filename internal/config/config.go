@@ -3,6 +3,8 @@ package config
 import (
 	"log"
 
+	"github.com/amirhnajafiz/jester/internal/config/http"
+	"github.com/amirhnajafiz/jester/internal/config/nats"
 	"github.com/amirhnajafiz/jester/internal/telemetry/metrics"
 
 	"github.com/knadh/koanf"
@@ -12,8 +14,9 @@ import (
 )
 
 type Config struct {
-	HTTPPort int            `koanf:"http_port"`
-	Metrics  metrics.Config `koanf:"metrics"`
+	HTTP    http.Config    `koanf:"http"`
+	NATS    nats.Config    `koanf:"nats"`
+	Metrics metrics.Config `koanf:"metrics"`
 }
 
 func Load(path string) Config {
