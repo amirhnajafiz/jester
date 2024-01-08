@@ -24,6 +24,8 @@ func (h Handler) cover(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	h.processMetrics(req)
+
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write([]byte("ok"))
 }
