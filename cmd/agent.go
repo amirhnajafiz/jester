@@ -1,13 +1,27 @@
 package cmd
 
-import "github.com/spf13/cobra"
+import (
+	"github.com/amirhnajafiz/jester/internal/config"
+	"github.com/amirhnajafiz/jester/internal/port/http"
+	"github.com/amirhnajafiz/jester/internal/telemetry/metrics"
 
-type Agent struct{}
+	"github.com/spf13/cobra"
+)
+
+type Agent struct {
+	Cfg config.Config
+}
 
 func (a Agent) Command() *cobra.Command {
 	return nil
 }
 
 func (a Agent) main() {
+	h := http.Handler{
+		Metrics: metrics.New(),
+	}
 
+	if err := h.Register(a.Cfg.HTTP.Port); err != nil {
+		panic(err)
+	}
 }
