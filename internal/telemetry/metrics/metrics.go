@@ -11,12 +11,10 @@ type Metrics struct {
 	Latency             int // per topic histogram
 }
 
-func (m Metrics) IncreaseNumberOfSubscribers(topic string) {
-	m.NumberOfSubscribers++
+func (m Metrics) UpdateNumberOfSubscribers(topic string, value int) {
 }
 
-func (m Metrics) IncreaseNumberOfPublishers(topic string) {
-	m.NumberOfPublishers++
+func (m Metrics) UpdateNumberOfPublishers(topic string, value int) {
 }
 
 func (m Metrics) IncreaseNumberOfPublish(topic string) {
@@ -39,6 +37,6 @@ func (m Metrics) IncreaseRetryPerConnection() {
 
 }
 
-func (m Metrics) AddLatency(topic string) {
+func (m Metrics) AddLatency(topic string, value float64) {
 
 }
