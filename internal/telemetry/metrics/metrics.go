@@ -1,14 +1,16 @@
 package metrics
 
+import "github.com/prometheus/client_golang/prometheus"
+
 type Metrics struct {
-	NumberOfSubscribers int // per topic gauge
-	NumberOfPublishers  int // per topic gauge
-	NumberOfPublish     int // per topic counter
-	NumberOfConsume     int // per topic counter
-	NumberOfFailures    int // per topic counter
-	FailedConnections   int // counter
-	RetryPerConnection  int // counter
-	Latency             int // per topic histogram
+	NumberOfSubscribers *prometheus.GaugeVec   // per topic gauge
+	NumberOfPublishers  *prometheus.GaugeVec   // per topic gauge
+	NumberOfPublish     *prometheus.CounterVec // per topic counter
+	NumberOfConsume     *prometheus.CounterVec // per topic counter
+	NumberOfFailures    *prometheus.CounterVec // per topic counter
+	FailedConnections   prometheus.Counter     // counter
+	RetryPerConnection  prometheus.Counter     // counter
+	Latency             prometheus.Histogram   // per topic histogram
 }
 
 func (m Metrics) UpdateNumberOfSubscribers(topic string, value int) {
