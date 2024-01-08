@@ -3,44 +3,44 @@ package metrics
 import "github.com/prometheus/client_golang/prometheus"
 
 type Metrics struct {
-	NumberOfSubscribers *prometheus.GaugeVec     // per topic gauge
-	NumberOfPublishers  *prometheus.GaugeVec     // per topic gauge
-	NumberOfPublish     *prometheus.CounterVec   // per topic counter
-	NumberOfConsume     *prometheus.CounterVec   // per topic counter
-	NumberOfFailures    *prometheus.CounterVec   // per topic counter
-	FailedConnections   prometheus.Counter       // counter
-	RetryPerConnection  prometheus.Counter       // counter
-	Latency             *prometheus.HistogramVec // per topic histogram
+	numberOfSubscribers *prometheus.GaugeVec     // per topic gauge
+	numberOfPublishers  *prometheus.GaugeVec     // per topic gauge
+	numberOfPublish     *prometheus.CounterVec   // per topic counter
+	numberOfConsume     *prometheus.CounterVec   // per topic counter
+	numberOfFailures    *prometheus.CounterVec   // per topic counter
+	failedConnections   prometheus.Counter       // counter
+	retryPerConnection  prometheus.Counter       // counter
+	latency             *prometheus.HistogramVec // per topic histogram
 }
 
 func (m Metrics) UpdateNumberOfSubscribers(topic string, value int) {
-	m.NumberOfSubscribers.With(prometheus.Labels{"topic": topic}).Add(float64(value))
+	m.numberOfSubscribers.With(prometheus.Labels{"topic": topic}).Add(float64(value))
 }
 
 func (m Metrics) UpdateNumberOfPublishers(topic string, value int) {
-	m.NumberOfPublishers.With(prometheus.Labels{"topic": topic}).Add(float64(value))
+	m.numberOfPublishers.With(prometheus.Labels{"topic": topic}).Add(float64(value))
 }
 
 func (m Metrics) IncreaseNumberOfPublish(topic string) {
-	m.NumberOfPublish.With(prometheus.Labels{"topic": topic}).Inc()
+	m.numberOfPublish.With(prometheus.Labels{"topic": topic}).Inc()
 }
 
 func (m Metrics) IncreaseNumberOfConsume(topic string) {
-	m.NumberOfConsume.With(prometheus.Labels{"topic": topic}).Inc()
+	m.numberOfConsume.With(prometheus.Labels{"topic": topic}).Inc()
 }
 
 func (m Metrics) IncreaseNumberOfFailures(topic string) {
-	m.NumberOfFailures.With(prometheus.Labels{"topic": topic}).Inc()
+	m.numberOfFailures.With(prometheus.Labels{"topic": topic}).Inc()
 }
 
 func (m Metrics) IncreaseFailedConnections() {
-	m.FailedConnections.Inc()
+	m.failedConnections.Inc()
 }
 
 func (m Metrics) IncreaseRetryPerConnection(value float64) {
-	m.RetryPerConnection.Add(value)
+	m.retryPerConnection.Add(value)
 }
 
 func (m Metrics) AddLatency(topic string, value float64) {
-	m.Latency.With(prometheus.Labels{"topic": topic}).Observe(value)
+	m.latency.With(prometheus.Labels{"topic": topic}).Observe(value)
 }

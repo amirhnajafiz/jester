@@ -5,9 +5,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/amirhnajafiz/jester/internal/telemetry/metrics"
 )
 
-type Handler struct{}
+type Handler struct {
+	Metrics *metrics.Metrics
+}
 
 func (h Handler) healthy(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
