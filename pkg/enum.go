@@ -1,8 +1,10 @@
 package pkg
 
 const (
-	FieldSubscribers int = iota + 1
-	FieldPublishers
+	FieldAddSubscriber int = iota + 1
+	FieldRemoveSubscriber
+	FieldAddPublisher
+	FieldRemovePublisher
 	FieldPublish
 	FieldConsume
 	FieldFailures
