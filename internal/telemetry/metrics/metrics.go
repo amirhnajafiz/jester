@@ -13,6 +13,21 @@ type Metrics struct {
 	latency             *prometheus.HistogramVec // per topic histogram
 }
 
+func New() *Metrics {
+	m := &Metrics{
+		numberOfSubscribers: prometheus.NewGaugeVec(prometheus.GaugeOpts{}, []string{"topic"}),
+		numberOfPublishers:  prometheus.NewGaugeVec(prometheus.GaugeOpts{}, []string{"topic"}),
+		numberOfPublish:     prometheus.NewCounterVec(prometheus.CounterOpts{}, []string{"topic"}),
+		numberOfConsume:     prometheus.NewCounterVec(prometheus.CounterOpts{}, []string{"topic"}),
+		numberOfFailures:    prometheus.NewCounterVec(prometheus.CounterOpts{}, []string{"topic"}),
+		failedConnections:   prometheus.NewCounter(prometheus.CounterOpts{}),
+		retryPerConnection:  prometheus.NewCounter(prometheus.CounterOpts{}),
+		latency:             prometheus.NewHistogramVec(prometheus.HistogramOpts{}, []string{"topic"}),
+	}
+
+	return m
+}
+
 func (m Metrics) UpdateNumberOfSubscribers(topic string, value int) {
 	m.numberOfSubscribers.With(prometheus.Labels{"topic": topic}).Add(float64(value))
 }
