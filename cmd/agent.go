@@ -13,7 +13,12 @@ type Agent struct {
 }
 
 func (a Agent) Command() *cobra.Command {
-	return nil
+	return &cobra.Command{
+		Use: "agent",
+		Run: func(_ *cobra.Command, _ []string) {
+			a.main()
+		},
+	}
 }
 
 func (a Agent) main() {
