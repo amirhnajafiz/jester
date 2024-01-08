@@ -10,3 +10,35 @@ type Metrics struct {
 	RetryPerConnection  int // counter
 	Latency             int // per topic histogram
 }
+
+func (m Metrics) IncreaseNumberOfSubscribers(topic string) {
+	m.NumberOfSubscribers++
+}
+
+func (m Metrics) IncreaseNumberOfPublishers(topic string) {
+	m.NumberOfPublishers++
+}
+
+func (m Metrics) IncreaseNumberOfPublish(topic string) {
+
+}
+
+func (m Metrics) IncreaseNumberOfConsume(topic string) {
+
+}
+
+func (m Metrics) IncreaseNumberOfFailures(topic string) {
+
+}
+
+func (m Metrics) IncreaseFailedConnections() {
+
+}
+
+func (m Metrics) IncreaseRetryPerConnection() {
+
+}
+
+func (m Metrics) AddLatency(topic string) {
+
+}
