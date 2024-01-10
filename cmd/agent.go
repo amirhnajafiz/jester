@@ -26,11 +26,17 @@ func (a Agent) main() {
 	metrics.NewServer(a.Cfg.Metrics).Start()
 
 	// register metrics
-	h := http.Handler{
-		Metrics: metrics.New(a.Cfg.Metrics),
+	m, err := metrics.New(a.Cfg.Metrics)
+	if err != nil {
+		panic(err)
 	}
 
-	// register http handler
+	// register handler
+	h := http.Handler{
+		Metrics: m,
+	}
+
+	// start handler
 	if err := h.Register(a.Cfg.HTTP.Port); err != nil {
 		panic(err)
 	}
