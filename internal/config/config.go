@@ -14,9 +14,10 @@ import (
 )
 
 type Config struct {
-	HTTP    http.Config    `koanf:"http"`
-	NATS    nats.Config    `koanf:"nats"`
-	Metrics metrics.Config `koanf:"metrics"`
+	HTTP              http.Config    `koanf:"http"`
+	NATS              nats.Config    `koanf:"nats"`
+	Metrics           metrics.Config `koanf:"metrics"`
+	PublisherInterval int            `koanf:"publisher_interval"`
 }
 
 func Load(path string) Config {

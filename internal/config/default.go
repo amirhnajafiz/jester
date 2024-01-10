@@ -19,5 +19,6 @@ func Default() Config {
 			Subsystem: "jester",
 			Namespace: "snappcloud.io",
 		},
+		PublisherInterval: 10, // in seconds
 	}
 }
