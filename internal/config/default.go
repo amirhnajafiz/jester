@@ -9,7 +9,8 @@ import (
 func Default() Config {
 	return Config{
 		HTTP: http.Config{
-			Port: 8080,
+			Port:  8080,
+			Agent: "",
 		},
 		NATS: nats.Config{},
 		Metrics: metrics.Config{

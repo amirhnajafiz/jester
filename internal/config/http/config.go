@@ -1,5 +1,6 @@
 package http
 
 type Config struct {
-	Port int `koanf:"port"`
+	Agent string `koanf:"agent"`
+	Port  int    `koanf:"port"`
 }
