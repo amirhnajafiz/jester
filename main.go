@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/amirhnajafiz/jester/cmd"
 	"github.com/amirhnajafiz/jester/internal/config"
 
@@ -26,6 +24,6 @@ func main() {
 
 	// execute root command
 	if err := root.Execute(); err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 }
