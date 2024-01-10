@@ -18,34 +18,50 @@ func New(cfg Config) *Metrics {
 		numberOfSubscribers: prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: cfg.Namespace,
 			Subsystem: cfg.Subsystem,
+			Name:      "number_of_subscribers",
+			Help:      "total number of subscribers per topic",
 		}, []string{"topic"}),
 		numberOfPublishers: prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: cfg.Namespace,
 			Subsystem: cfg.Subsystem,
+			Name:      "number_of_publishers",
+			Help:      "total number of publishers per topic",
 		}, []string{"topic"}),
 		numberOfPublish: prometheus.NewCounterVec(prometheus.CounterOpts{
 			Namespace: cfg.Namespace,
 			Subsystem: cfg.Subsystem,
+			Name:      "number_of_publish",
+			Help:      "total number of publish events per topic",
 		}, []string{"topic"}),
 		numberOfConsume: prometheus.NewCounterVec(prometheus.CounterOpts{
 			Namespace: cfg.Namespace,
 			Subsystem: cfg.Subsystem,
+			Name:      "number_of_consume",
+			Help:      "total number of consume events per topic",
 		}, []string{"topic"}),
 		numberOfFailures: prometheus.NewCounterVec(prometheus.CounterOpts{
 			Namespace: cfg.Namespace,
 			Subsystem: cfg.Subsystem,
+			Name:      "number_of_failures",
+			Help:      "total number of failed publish events per topic",
 		}, []string{"topic"}),
 		failedConnections: prometheus.NewCounter(prometheus.CounterOpts{
 			Namespace: cfg.Namespace,
 			Subsystem: cfg.Subsystem,
+			Name:      "failed_connections",
+			Help:      "total number of failed connections",
 		}),
 		retryPerConnection: prometheus.NewCounter(prometheus.CounterOpts{
 			Namespace: cfg.Namespace,
 			Subsystem: cfg.Subsystem,
+			Name:      "retry_connections",
+			Help:      "total number of retry per connection",
 		}),
 		latency: prometheus.NewHistogramVec(prometheus.HistogramOpts{
 			Namespace: cfg.Namespace,
 			Subsystem: cfg.Subsystem,
+			Name:      "latency",
+			Help:      "service latency per topic",
 		}, []string{"topic"}),
 	}
 
