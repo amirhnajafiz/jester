@@ -1,22 +1,21 @@
 package publisher
 
 import (
-	"context"
 	"log"
 	"time"
 
 	"github.com/amirhnajafiz/jester/internal/client"
 
-	"github.com/nats-io/nats.go/jetstream"
+	"github.com/nats-io/nats.go"
 )
 
 type Handler struct {
 	Cfg    Config
 	Client client.Client
-	Conn   jetstream.JetStream
+	Conn   nats.JetStream
 }
 
-func New(cfg Config, conn jetstream.JetStream) *Handler {
+func New(cfg Config, conn nats.JetStream) *Handler {
 	return &Handler{
 		Conn: conn,
 		Cfg:  cfg,
@@ -27,11 +26,8 @@ func New(cfg Config, conn jetstream.JetStream) *Handler {
 }
 
 func (h Handler) Start() error {
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-
 	for {
-		if _, err := h.Conn.Publish(ctx, h.Cfg.Stream, []byte(""), nil); err != nil {
+		if _, err := h.Conn.Publish(h.Cfg.Stream, []byte(""), nil); err != nil {
 			log.Println(err)
 		}
 

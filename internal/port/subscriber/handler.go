@@ -1,23 +1,21 @@
 package subscriber
 
 import (
-	"context"
 	"log"
 	"sync"
-	"time"
 
 	"github.com/amirhnajafiz/jester/internal/client"
 
-	"github.com/nats-io/nats.go/jetstream"
+	"github.com/nats-io/nats.go"
 )
 
 type Handler struct {
 	Cfg    Config
 	Client client.Client
-	Conn   jetstream.JetStream
+	Conn   nats.JetStream
 }
 
-func New(cfg Config, conn jetstream.JetStream) *Handler {
+func New(cfg Config, conn nats.JetStream) *Handler {
 	return &Handler{
 		Conn: conn,
 		Cfg:  cfg,
@@ -28,33 +26,18 @@ func New(cfg Config, conn jetstream.JetStream) *Handler {
 }
 
 func (h Handler) Start() error {
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-
-	// get existing stream handle
-	stream, err := h.Conn.Stream(ctx, h.Cfg.Stream)
-	if err != nil {
-		return err
-	}
-
-	// retrieve consumer handle from a stream
-	cons, err := stream.Consumer(ctx, h.Cfg.Topic)
-	if err != nil {
-		return err
-	}
-
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
 	// consume messages from the consumer in callback
-	cc, _ := cons.Consume(func(msg jetstream.Msg) {
+	sub, _ := h.Conn.Subscribe(h.Cfg.Topic, func(msg *nats.Msg) {
 		if err := msg.Ack(); err != nil {
 			log.Println(err)
 		}
 
-		log.Println("received jetstream message: ", string(msg.Data()))
+		log.Println("received jetstream message: ", string(msg.Data))
 	})
-	defer cc.Stop()
+	defer sub.Unsubscribe()
 
 	wg.Wait()
 

@@ -1,11 +1,8 @@
 package cmd
 
-import (
-	"github.com/nats-io/nats.go"
-	"github.com/nats-io/nats.go/jetstream"
-)
+import "github.com/nats-io/nats.go"
 
-func NewNATSConn(host string) (jetstream.JetStream, error) {
+func NewNATSConn(host string) (nats.JetStream, error) {
 	// connect to nats server
 	nc, err := nats.Connect(host)
 	if err != nil {
@@ -13,5 +10,5 @@ func NewNATSConn(host string) (jetstream.JetStream, error) {
 	}
 
 	// create jetstream context from nats connection
-	return jetstream.New(nc)
+	return nc.JetStream(nil)
 }
