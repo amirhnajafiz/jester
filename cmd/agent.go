@@ -22,10 +22,15 @@ func (a Agent) Command() *cobra.Command {
 }
 
 func (a Agent) main() {
+	// start metrics server
+	metrics.NewServer(a.Cfg.Metrics).Start()
+
+	// register metrics
 	h := http.Handler{
 		Metrics: metrics.New(),
 	}
 
+	// register http handler
 	if err := h.Register(a.Cfg.HTTP.Port); err != nil {
 		panic(err)
 	}
