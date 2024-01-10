@@ -24,9 +24,12 @@ func (p Publisher) main() {
 	}
 
 	// register handler
-	publisher.New(publisher.Config{
+	err = publisher.New(publisher.Config{
 		Agent:    p.Cfg.HTTP.Agent,
 		Topic:    p.Cfg.NATS.Topic,
 		Interval: time.Duration(p.Cfg.PublisherInterval) * time.Second,
-	}, conn)
+	}, conn).Start()
+	if err != nil {
+		panic(err)
+	}
 }
