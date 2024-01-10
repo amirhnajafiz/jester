@@ -37,7 +37,12 @@ func (h Handler) Start() error {
 
 		log.Println("received jetstream message: ", string(msg.Data))
 	})
-	defer sub.Unsubscribe()
+	defer func(sub *nats.Subscription) {
+		err := sub.Unsubscribe()
+		if err != nil {
+			log.Println(err)
+		}
+	}(sub)
 
 	wg.Wait()
 

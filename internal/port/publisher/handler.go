@@ -27,7 +27,7 @@ func New(cfg Config, conn nats.JetStream) *Handler {
 
 func (h Handler) Start() error {
 	for {
-		if _, err := h.Conn.Publish(h.Cfg.Stream, []byte(""), nil); err != nil {
+		if _, err := h.Conn.Publish(h.Cfg.Topic, []byte("testing message"), nil); err != nil {
 			log.Println(err)
 		}
 
