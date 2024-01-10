@@ -1,9 +1,12 @@
 package publisher
 
-import "time"
+import (
+	"time"
+)
 
 type Config struct {
-	Host     string
-	Agent    string
 	Interval time.Duration
+	Agent    string
+	Topic    string
+	Stream   string
 }
