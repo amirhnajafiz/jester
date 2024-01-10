@@ -27,7 +27,7 @@ func (a Agent) main() {
 
 	// register metrics
 	h := http.Handler{
-		Metrics: metrics.New(),
+		Metrics: metrics.New(a.Cfg.Metrics),
 	}
 
 	// register http handler

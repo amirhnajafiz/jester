@@ -13,8 +13,10 @@ func Default() Config {
 		},
 		NATS: nats.Config{},
 		Metrics: metrics.Config{
-			Address: ":8081",
-			Enabled: true,
+			Address:   ":8081",
+			Enabled:   true,
+			Subsystem: "jester",
+			Namespace: "snappcloud.io",
 		},
 	}
 }

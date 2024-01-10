@@ -13,16 +13,40 @@ type Metrics struct {
 	latency             *prometheus.HistogramVec // per topic histogram
 }
 
-func New() *Metrics {
+func New(cfg Config) *Metrics {
 	m := &Metrics{
-		numberOfSubscribers: prometheus.NewGaugeVec(prometheus.GaugeOpts{}, []string{"topic"}),
-		numberOfPublishers:  prometheus.NewGaugeVec(prometheus.GaugeOpts{}, []string{"topic"}),
-		numberOfPublish:     prometheus.NewCounterVec(prometheus.CounterOpts{}, []string{"topic"}),
-		numberOfConsume:     prometheus.NewCounterVec(prometheus.CounterOpts{}, []string{"topic"}),
-		numberOfFailures:    prometheus.NewCounterVec(prometheus.CounterOpts{}, []string{"topic"}),
-		failedConnections:   prometheus.NewCounter(prometheus.CounterOpts{}),
-		retryPerConnection:  prometheus.NewCounter(prometheus.CounterOpts{}),
-		latency:             prometheus.NewHistogramVec(prometheus.HistogramOpts{}, []string{"topic"}),
+		numberOfSubscribers: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Namespace: cfg.Namespace,
+			Subsystem: cfg.Subsystem,
+		}, []string{"topic"}),
+		numberOfPublishers: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Namespace: cfg.Namespace,
+			Subsystem: cfg.Subsystem,
+		}, []string{"topic"}),
+		numberOfPublish: prometheus.NewCounterVec(prometheus.CounterOpts{
+			Namespace: cfg.Namespace,
+			Subsystem: cfg.Subsystem,
+		}, []string{"topic"}),
+		numberOfConsume: prometheus.NewCounterVec(prometheus.CounterOpts{
+			Namespace: cfg.Namespace,
+			Subsystem: cfg.Subsystem,
+		}, []string{"topic"}),
+		numberOfFailures: prometheus.NewCounterVec(prometheus.CounterOpts{
+			Namespace: cfg.Namespace,
+			Subsystem: cfg.Subsystem,
+		}, []string{"topic"}),
+		failedConnections: prometheus.NewCounter(prometheus.CounterOpts{
+			Namespace: cfg.Namespace,
+			Subsystem: cfg.Subsystem,
+		}),
+		retryPerConnection: prometheus.NewCounter(prometheus.CounterOpts{
+			Namespace: cfg.Namespace,
+			Subsystem: cfg.Subsystem,
+		}),
+		latency: prometheus.NewHistogramVec(prometheus.HistogramOpts{
+			Namespace: cfg.Namespace,
+			Subsystem: cfg.Subsystem,
+		}, []string{"topic"}),
 	}
 
 	return m
