@@ -13,7 +13,7 @@ type Metrics struct {
 	latency             *prometheus.HistogramVec // per topic histogram
 }
 
-func New(cfg Config) *Metrics {
+func New(cfg Config) (*Metrics, error) {
 	m := &Metrics{
 		numberOfSubscribers: prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: cfg.Namespace,
@@ -65,7 +65,32 @@ func New(cfg Config) *Metrics {
 		}, []string{"topic"}),
 	}
 
-	return m
+	if err := prometheus.Register(m.numberOfSubscribers); err != nil {
+		return nil, err
+	}
+	if err := prometheus.Register(m.numberOfPublishers); err != nil {
+		return nil, err
+	}
+	if err := prometheus.Register(m.numberOfPublish); err != nil {
+		return nil, err
+	}
+	if err := prometheus.Register(m.numberOfConsume); err != nil {
+		return nil, err
+	}
+	if err := prometheus.Register(m.numberOfFailures); err != nil {
+		return nil, err
+	}
+	if err := prometheus.Register(m.failedConnections); err != nil {
+		return nil, err
+	}
+	if err := prometheus.Register(m.retryPerConnection); err != nil {
+		return nil, err
+	}
+	if err := prometheus.Register(m.latency); err != nil {
+		return nil, err
+	}
+
+	return m, nil
 }
 
 func (m Metrics) UpdateNumberOfSubscribers(topic string, value int) {
