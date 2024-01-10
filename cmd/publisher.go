@@ -27,7 +27,6 @@ func (p Publisher) main() {
 	publisher.New(publisher.Config{
 		Agent:    p.Cfg.HTTP.Agent,
 		Topic:    p.Cfg.NATS.Topic,
-		Stream:   p.Cfg.NATS.Stream,
 		Interval: time.Duration(p.Cfg.PublisherInterval) * time.Second,
 	}, conn)
 }
