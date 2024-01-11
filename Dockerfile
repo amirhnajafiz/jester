@@ -1,5 +1,5 @@
 # build stage
-FROM golang:1.17-alpine AS builder
+FROM golang:1.20-alpine AS builder
 
 # set the work dir
 WORKDIR /go/src/app
@@ -8,7 +8,7 @@ WORKDIR /go/src/app
 COPY . /go/src/app
 
 # build the application
-RUN go build -ldflags="-w -s" -o stan_gee
+RUN go build -ldflags="-w -s" -o main
 
 # final stage
 FROM alpine
@@ -26,7 +26,7 @@ RUN mkdir -p /var/log && \
 WORKDIR /app
 
 # copy files from stage
-COPY --from=builder /go/src/app/stan_gee /app/stan_gee
+COPY --from=builder /go/src/app/main /app/main
 
 # run
-ENTRYPOINT /app/stan_gee
+ENTRYPOINT /app/main
