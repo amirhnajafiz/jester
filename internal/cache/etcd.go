@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	clientv3 "go.etcd.io/etcd/client/v3"
@@ -45,5 +46,17 @@ func (c cache) Put(key string, value string) error {
 }
 
 func (c cache) Get(key string) (string, error) {
-	return "", nil
+	ctx, cancel := context.WithTimeout(context.Background(), c.timout)
+	defer cancel()
+
+	resp, err := c.conn.Get(ctx, key)
+	if err != nil {
+		return "", err
+	}
+
+	for _, ev := range resp.Kvs {
+		return string(ev.Value), nil
+	}
+
+	return "", errors.New("item not found")
 }
