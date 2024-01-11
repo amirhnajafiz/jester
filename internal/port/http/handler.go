@@ -6,10 +6,12 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/amirhnajafiz/jester/internal/cache"
 	"github.com/amirhnajafiz/jester/internal/telemetry/metrics"
 )
 
 type Handler struct {
+	ETCD    cache.ETCD
 	Metrics *metrics.Metrics
 }
 

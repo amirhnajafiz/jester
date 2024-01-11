@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/amirhnajafiz/jester/internal/cache"
 	"github.com/amirhnajafiz/jester/internal/config"
 	"github.com/amirhnajafiz/jester/internal/port/http"
 	"github.com/amirhnajafiz/jester/internal/telemetry/metrics"
@@ -31,8 +32,15 @@ func (a Agent) main() {
 		panic(err)
 	}
 
+	// etcd
+	e, err := cache.NewCache(a.Cfg.ETCD)
+	if err != nil {
+		panic(err)
+	}
+
 	// register handler
 	h := http.Handler{
+		ETCD:    e,
 		Metrics: m,
 	}
 
