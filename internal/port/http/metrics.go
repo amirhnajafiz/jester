@@ -20,13 +20,13 @@ func (h Handler) processMetrics(req Request) {
 	case pkg.FieldPublish:
 		h.Metrics.IncreaseNumberOfPublish(req.Label)
 
-		if err := h.ETCD.Put(req.Label, time.Now().Format(time.DateTime)); err != nil {
+		if err := h.ETCD.Put(req.Label+req.Param, time.Now().Format(time.DateTime)); err != nil {
 			log.Println(err)
 		}
 	case pkg.FieldConsume:
 		h.Metrics.IncreaseNumberOfConsume(req.Label)
 
-		tmp, err := h.ETCD.Get(req.Label)
+		tmp, err := h.ETCD.Get(req.Label + req.Param)
 		if err != nil {
 			log.Println(err)
 
