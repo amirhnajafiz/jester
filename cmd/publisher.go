@@ -17,18 +17,15 @@ func (p Publisher) Command() *cobra.Command {
 }
 
 func (p Publisher) main() {
-	// open nats connection
-	conn, err := NewNATSConn(p.Cfg.NATS.Host)
-	if err != nil {
-		panic(err)
-	}
-
-	// register handler
-	err = publisher.New(publisher.Config{
+	h := publisher.New(publisher.Config{
 		Agent:    p.Cfg.HTTP.Agent,
 		Topic:    p.Cfg.NATS.Topic,
+		Host:     p.Cfg.NATS.Host,
 		Interval: time.Duration(p.Cfg.PublisherInterval) * time.Second,
-	}, conn).Start()
+	})
+
+	// start handler
+	err := h.Start()
 	if err != nil {
 		panic(err)
 	}

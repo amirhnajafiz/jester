@@ -22,11 +22,6 @@ func (c Consumer) main() {
 		Host:  c.Cfg.NATS.Host,
 	})
 
-	// register handler
-	if err := h.Register(); err != nil {
-		panic(err)
-	}
-
 	// start handler
 	err := h.Start()
 	if err != nil {
