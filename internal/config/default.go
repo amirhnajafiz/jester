@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/amirhnajafiz/jester/internal/cache"
 	"github.com/amirhnajafiz/jester/internal/config/http"
 	"github.com/amirhnajafiz/jester/internal/config/nats"
 	"github.com/amirhnajafiz/jester/internal/telemetry/metrics"
@@ -8,6 +9,7 @@ import (
 
 func Default() Config {
 	return Config{
+		ETCD: cache.Config{},
 		HTTP: http.Config{
 			Port:  8080,
 			Agent: "",

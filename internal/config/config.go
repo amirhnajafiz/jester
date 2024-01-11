@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 
+	"github.com/amirhnajafiz/jester/internal/cache"
 	"github.com/amirhnajafiz/jester/internal/config/http"
 	"github.com/amirhnajafiz/jester/internal/config/nats"
 	"github.com/amirhnajafiz/jester/internal/telemetry/metrics"
@@ -14,6 +15,7 @@ import (
 )
 
 type Config struct {
+	ETCD              cache.Config   `koanf:"etcd"`
 	HTTP              http.Config    `koanf:"http"`
 	NATS              nats.Config    `koanf:"nats"`
 	Metrics           metrics.Config `koanf:"metrics"`
