@@ -15,8 +15,12 @@ func main() {
 	cfg := config.Load("config.yml")
 
 	root.AddCommand(
-		cmd.Publisher{}.Command(),
-		cmd.Consumer{}.Command(),
+		cmd.Publisher{
+			Cfg: cfg,
+		}.Command(),
+		cmd.Consumer{
+			Cfg: cfg,
+		}.Command(),
 		cmd.Agent{
 			Cfg: cfg,
 		}.Command(),
