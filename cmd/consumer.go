@@ -17,9 +17,10 @@ func (c Consumer) Command() *cobra.Command {
 
 func (c Consumer) main() {
 	h := subscriber.New(subscriber.Config{
-		Agent: c.Cfg.HTTP.Agent,
-		Topic: c.Cfg.NATS.Topic,
-		Host:  c.Cfg.NATS.Host,
+		Agent:    c.Cfg.HTTP.Agent,
+		Topic:    c.Cfg.NATS.Topic,
+		Host:     c.Cfg.NATS.Host,
+		MaxRetry: c.Cfg.NATS.MaxRetry,
 	})
 
 	// start handler

@@ -21,6 +21,7 @@ func (p Publisher) main() {
 		Agent:    p.Cfg.HTTP.Agent,
 		Topic:    p.Cfg.NATS.Topic,
 		Host:     p.Cfg.NATS.Host,
+		MaxRetry: p.Cfg.NATS.MaxRetry,
 		Interval: time.Duration(p.Cfg.PublisherInterval) * time.Second,
 	})
 
