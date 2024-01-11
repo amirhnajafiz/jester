@@ -12,10 +12,13 @@ type Consumer struct {
 }
 
 func (c Consumer) Command() *cobra.Command {
-	return nil
+	return &cobra.Command{
+		Use: "consumer",
+		Run: c.main,
+	}
 }
 
-func (c Consumer) main() {
+func (c Consumer) main(_ *cobra.Command, _ []string) {
 	h := subscriber.New(subscriber.Config{
 		Agent:    c.Cfg.HTTP.Agent,
 		Topic:    c.Cfg.NATS.Topic,
