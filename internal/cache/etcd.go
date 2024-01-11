@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"context"
 	"time"
 
 	clientv3 "go.etcd.io/etcd/client/v3"
@@ -21,15 +22,25 @@ func NewCache(cfg Config) (ETCD, error) {
 	}
 
 	return &cache{
-		conn: cli,
+		conn:   cli,
+		timout: time.Duration(cfg.Timeout) * time.Second,
 	}, nil
 }
 
 type cache struct {
-	conn *clientv3.Client
+	conn   *clientv3.Client
+	timout time.Duration
 }
 
 func (c cache) Put(key string, value string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), c.timout)
+	defer cancel()
+
+	_, err := c.conn.Put(ctx, key, value)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
