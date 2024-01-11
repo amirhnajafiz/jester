@@ -16,12 +16,19 @@ func (c Consumer) Command() *cobra.Command {
 }
 
 func (c Consumer) main() {
-	// register handler
-	err := subscriber.New(subscriber.Config{
+	h := subscriber.New(subscriber.Config{
 		Agent: c.Cfg.HTTP.Agent,
 		Topic: c.Cfg.NATS.Topic,
 		Host:  c.Cfg.NATS.Host,
-	}).Start()
+	})
+
+	// register handler
+	if err := h.Register(); err != nil {
+		panic(err)
+	}
+
+	// start handler
+	err := h.Start()
 	if err != nil {
 		panic(err)
 	}
