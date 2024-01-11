@@ -26,6 +26,9 @@ func (c Consumer) main(_ *cobra.Command, _ []string) {
 		Host:     c.Cfg.NATS.Host,
 		MaxRetry: c.Cfg.NATS.MaxRetry,
 	})
+	if h == nil {
+		panic("cannot connect to NATS cluster")
+	}
 
 	// start handler
 	err := h.Start()

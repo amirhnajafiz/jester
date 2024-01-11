@@ -29,6 +29,9 @@ func (p Publisher) main(_ *cobra.Command, _ []string) {
 		MaxRetry: p.Cfg.NATS.MaxRetry,
 		Interval: time.Duration(p.Cfg.PublisherInterval) * time.Second,
 	})
+	if h == nil {
+		panic("cannot connect to NATS cluster")
+	}
 
 	// start handler
 	err := h.Start()
