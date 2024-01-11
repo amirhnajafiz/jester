@@ -28,10 +28,6 @@ func New(cfg Config) *Handler {
 	}
 }
 
-func (h Handler) Register() error {
-	return h.NATS.Connect()
-}
-
 func (h Handler) Start() error {
 	wg := sync.WaitGroup{}
 	wg.Add(1)

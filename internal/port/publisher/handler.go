@@ -4,30 +4,31 @@ import (
 	"log"
 	"time"
 
-	"github.com/amirhnajafiz/jester/internal/client"
-
-	"github.com/nats-io/nats.go"
+	"github.com/amirhnajafiz/jester/internal/client/http"
+	internalNATS "github.com/amirhnajafiz/jester/internal/client/nats"
 )
 
 type Handler struct {
 	Cfg    Config
-	Client client.Client
-	Conn   nats.JetStream
+	Client http.Client
+	NATS   internalNATS.Client
 }
 
-func New(cfg Config, conn nats.JetStream) *Handler {
+func New(cfg Config) *Handler {
 	return &Handler{
-		Conn: conn,
-		Cfg:  cfg,
-		Client: client.Client{
+		Cfg: cfg,
+		Client: http.Client{
 			Host: cfg.Agent,
+		},
+		NATS: internalNATS.Client{
+			Host: cfg.Host,
 		},
 	}
 }
 
 func (h Handler) Start() error {
 	for {
-		if _, err := h.Conn.Publish(h.Cfg.Topic, []byte("testing message"), nil); err != nil {
+		if _, err := h.NATS.JS.Publish(h.Cfg.Topic, []byte("testing message"), nil); err != nil {
 			log.Println(err)
 		}
 
