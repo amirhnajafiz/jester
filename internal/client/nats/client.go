@@ -1,10 +1,14 @@
-package cmd
+package nats
 
 import "github.com/nats-io/nats.go"
 
-func NewNATSConn(host string) (nats.JetStream, error) {
+type Client struct {
+	Host string
+}
+
+func (c Client) Connect() (nats.JetStream, error) {
 	// connect to nats server
-	nc, err := nats.Connect(host)
+	nc, err := nats.Connect(c.Host)
 	if err != nil {
 		return nil, err
 	}
