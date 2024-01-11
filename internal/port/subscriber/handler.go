@@ -44,7 +44,7 @@ func New(cfg Config) *Handler {
 
 		return nil
 	} else {
-		c.SendPost(pkg.NewRequest(pkg.FieldAddSubscriber).ToBytes())
+		c.SendPost(pkg.NewRequest(pkg.FieldAddSubscriber).WithLabel(cfg.Topic).ToBytes())
 		if retry > 0 {
 			c.SendPost(pkg.NewRequest(pkg.FieldRetryPerConnection).WithValue(float64(retry)).ToBytes())
 		}
@@ -65,7 +65,13 @@ func (h Handler) Start() error {
 	sub, _ := h.NATS.JS.Subscribe(h.Cfg.Topic, func(msg *nats.Msg) {
 		if err := msg.Ack(); err != nil {
 			log.Println(err)
+
+			h.Client.SendPost(pkg.NewRequest(pkg.FieldRemoveSubscriber).WithLabel(h.Cfg.Topic).ToBytes())
+
+			wg.Done()
 		}
+
+		h.Client.SendPost(pkg.NewRequest(pkg.FieldConsume).WithLabel(h.Cfg.Topic).ToBytes())
 
 		log.Println("received jetstream message: ", string(msg.Data))
 	})

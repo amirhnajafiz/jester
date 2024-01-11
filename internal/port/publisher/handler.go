@@ -41,7 +41,7 @@ func New(cfg Config) *Handler {
 
 		return nil
 	} else {
-		c.SendPost(pkg.NewRequest(pkg.FieldAddPublisher).ToBytes())
+		c.SendPost(pkg.NewRequest(pkg.FieldAddPublisher).WithLabel(cfg.Topic).ToBytes())
 		if retry > 0 {
 			c.SendPost(pkg.NewRequest(pkg.FieldRetryPerConnection).WithValue(float64(retry)).ToBytes())
 		}
@@ -58,7 +58,14 @@ func (h Handler) Start() error {
 	for {
 		if _, err := h.NATS.JS.Publish(h.Cfg.Topic, []byte("testing message"), nil); err != nil {
 			log.Println(err)
+
+			h.Client.SendPost(pkg.NewRequest(pkg.FieldFailures).WithLabel(h.Cfg.Topic).ToBytes())
+			h.Client.SendPost(pkg.NewRequest(pkg.FieldRemovePublisher).WithLabel(h.Cfg.Topic).ToBytes())
+
+			return err
 		}
+
+		h.Client.SendPost(pkg.NewRequest(pkg.FieldPublish).WithLabel(h.Cfg.Topic).ToBytes())
 
 		time.Sleep(h.Cfg.Interval)
 	}
