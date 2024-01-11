@@ -16,17 +16,12 @@ func (c Consumer) Command() *cobra.Command {
 }
 
 func (c Consumer) main() {
-	// open nats connection
-	conn, err := NewNATSConn(c.Cfg.NATS.Host)
-	if err != nil {
-		panic(err)
-	}
-
 	// register handler
-	err = subscriber.New(subscriber.Config{
+	err := subscriber.New(subscriber.Config{
 		Agent: c.Cfg.HTTP.Agent,
 		Topic: c.Cfg.NATS.Topic,
-	}, conn).Start()
+		Host:  c.Cfg.NATS.Host,
+	}).Start()
 	if err != nil {
 		panic(err)
 	}

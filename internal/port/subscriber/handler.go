@@ -4,23 +4,26 @@ import (
 	"log"
 	"sync"
 
-	"github.com/amirhnajafiz/jester/internal/client"
+	"github.com/amirhnajafiz/jester/internal/client/http"
+	internalNATS "github.com/amirhnajafiz/jester/internal/client/nats"
 
 	"github.com/nats-io/nats.go"
 )
 
 type Handler struct {
 	Cfg    Config
-	Client client.Client
-	Conn   nats.JetStream
+	Client http.Client
+	NATS   internalNATS.Client
 }
 
-func New(cfg Config, conn nats.JetStream) *Handler {
+func New(cfg Config) *Handler {
 	return &Handler{
-		Conn: conn,
-		Cfg:  cfg,
-		Client: client.Client{
+		Cfg: cfg,
+		Client: http.Client{
 			Host: cfg.Agent,
+		},
+		NATS: internalNATS.Client{
+			Host: cfg.Host,
 		},
 	}
 }
@@ -30,7 +33,7 @@ func (h Handler) Start() error {
 	wg.Add(1)
 
 	// consume messages from the consumer in callback
-	sub, _ := h.Conn.Subscribe(h.Cfg.Topic, func(msg *nats.Msg) {
+	sub, _ := h.NATS.JS.Subscribe(h.Cfg.Topic, func(msg *nats.Msg) {
 		if err := msg.Ack(); err != nil {
 			log.Println(err)
 		}
