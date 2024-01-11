@@ -7,6 +7,7 @@ import (
 	"github.com/amirhnajafiz/jester/internal/client/http"
 	internalNATS "github.com/amirhnajafiz/jester/internal/client/nats"
 	"github.com/amirhnajafiz/jester/pkg"
+	"github.com/google/uuid"
 )
 
 type Handler struct {
@@ -56,7 +57,9 @@ func New(cfg Config) *Handler {
 
 func (h Handler) Start() error {
 	for {
-		if _, err := h.NATS.JS.Publish(h.Cfg.Topic, []byte("testing message"), nil); err != nil {
+		msg := uuid.NewString()
+
+		if _, err := h.NATS.JS.Publish(h.Cfg.Topic, []byte(msg), nil); err != nil {
 			log.Println(err)
 
 			h.Client.SendPost(pkg.NewRequest(pkg.FieldFailures).WithLabel(h.Cfg.Topic).ToBytes())
@@ -65,7 +68,7 @@ func (h Handler) Start() error {
 			return err
 		}
 
-		h.Client.SendPost(pkg.NewRequest(pkg.FieldPublish).WithLabel(h.Cfg.Topic).ToBytes())
+		h.Client.SendPost(pkg.NewRequest(pkg.FieldPublish).WithLabel(h.Cfg.Topic).WithParam(msg).ToBytes())
 
 		time.Sleep(h.Cfg.Interval)
 	}

@@ -71,7 +71,7 @@ func (h Handler) Start() error {
 			wg.Done()
 		}
 
-		h.Client.SendPost(pkg.NewRequest(pkg.FieldConsume).WithLabel(h.Cfg.Topic).ToBytes())
+		h.Client.SendPost(pkg.NewRequest(pkg.FieldConsume).WithLabel(h.Cfg.Topic).WithParam(string(msg.Data)).ToBytes())
 
 		log.Println("received jetstream message: ", string(msg.Data))
 	})
