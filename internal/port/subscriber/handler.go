@@ -7,6 +7,7 @@ import (
 
 	"github.com/amirhnajafiz/jester/internal/client/http"
 	internalNATS "github.com/amirhnajafiz/jester/internal/client/nats"
+	"github.com/amirhnajafiz/jester/pkg"
 
 	"github.com/nats-io/nats.go"
 )
@@ -22,6 +23,10 @@ func New(cfg Config) *Handler {
 		Host: cfg.Host,
 	}
 
+	c := http.Client{
+		Host: cfg.Agent,
+	}
+
 	retry := 0
 
 	for i := 0; i < cfg.MaxRetry; i++ {
@@ -34,12 +39,21 @@ func New(cfg Config) *Handler {
 		time.Sleep(5 * time.Second)
 	}
 
+	if retry == cfg.MaxRetry {
+		c.SendPost(pkg.NewRequest(pkg.FieldFailedConnections).ToBytes())
+
+		return nil
+	} else {
+		c.SendPost(pkg.NewRequest(pkg.FieldAddSubscriber).ToBytes())
+		if retry > 0 {
+			c.SendPost(pkg.NewRequest(pkg.FieldRetryPerConnection).WithValue(float64(retry)).ToBytes())
+		}
+	}
+
 	return &Handler{
-		Cfg: cfg,
-		Client: http.Client{
-			Host: cfg.Agent,
-		},
-		NATS: n,
+		Cfg:    cfg,
+		Client: c,
+		NATS:   n,
 	}
 }
 
