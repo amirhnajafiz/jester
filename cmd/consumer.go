@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/amirhnajafiz/jester/internal/config"
 	"github.com/amirhnajafiz/jester/internal/port/subscriber"
 
@@ -20,7 +21,7 @@ func (c Consumer) Command() *cobra.Command {
 
 func (c Consumer) main(_ *cobra.Command, _ []string) {
 	h := subscriber.New(subscriber.Config{
-		Agent:    c.Cfg.HTTP.Agent,
+		Agent:    fmt.Sprintf("%s/cover", c.Cfg.HTTP.Agent),
 		Topic:    c.Cfg.NATS.Topic,
 		Host:     c.Cfg.NATS.Host,
 		MaxRetry: c.Cfg.NATS.MaxRetry,

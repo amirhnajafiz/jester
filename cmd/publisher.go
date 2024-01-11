@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/amirhnajafiz/jester/internal/config"
@@ -22,7 +23,7 @@ func (p Publisher) Command() *cobra.Command {
 
 func (p Publisher) main(_ *cobra.Command, _ []string) {
 	h := publisher.New(publisher.Config{
-		Agent:    p.Cfg.HTTP.Agent,
+		Agent:    fmt.Sprintf("%s/cover", p.Cfg.HTTP.Agent),
 		Topic:    p.Cfg.NATS.Topic,
 		Host:     p.Cfg.NATS.Host,
 		MaxRetry: p.Cfg.NATS.MaxRetry,
