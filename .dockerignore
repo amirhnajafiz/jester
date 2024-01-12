@@ -1,0 +1,4 @@
+config/
+.idea/
+docker-compose.yml
+Dockerfile
