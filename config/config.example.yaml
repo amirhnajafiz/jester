@@ -1,0 +1,16 @@
+etcd:
+  endpoints:
+    - ""
+  timeout: 5 # seconds
+http:
+  agent: "http://agent:8080"
+  port: 8080
+nats:
+  host: "nats://jetstream:4222"
+  topic: "snappcloud.io.EVENTS"
+  max_retry: 10 # times
+metrics:
+  enable: true
+  subsystem: "jester"
+  namespace: "default"
+publisher_interval: 5 # seconds
