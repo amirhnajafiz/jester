@@ -10,14 +10,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Publisher sends data over nats
+// in an interval
 type Publisher struct {
 	Cfg config.Config
 }
 
 func (p Publisher) Command() *cobra.Command {
 	return &cobra.Command{
-		Use: "publisher",
-		Run: p.main,
+		Use:   "publisher",
+		Short: "nats-publisher",
+		Long:  "publisher sends data over NATS cluster",
+		Run:   p.main,
 	}
 }
 

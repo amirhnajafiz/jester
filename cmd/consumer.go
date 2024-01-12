@@ -2,20 +2,24 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/amirhnajafiz/jester/internal/config"
 	"github.com/amirhnajafiz/jester/internal/port/subscriber"
 
 	"github.com/spf13/cobra"
 )
 
+// Consumer is the NATS subscriber
 type Consumer struct {
 	Cfg config.Config
 }
 
 func (c Consumer) Command() *cobra.Command {
 	return &cobra.Command{
-		Use: "consumer",
-		Run: c.main,
+		Use:   "consumer",
+		Short: "nats-subscriber",
+		Long:  "consumer subscribes on a topic over NATS",
+		Run:   c.main,
 	}
 }
 
