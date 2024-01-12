@@ -9,14 +9,20 @@ import (
 
 func Default() Config {
 	return Config{
-		ETCD: cache.Config{},
+		ETCD: cache.Config{
+			Endpoints: []string{},
+			Timeout:   5, // in seconds
+		},
 		HTTP: http.Config{
 			Port:  8080,
 			Agent: "",
 		},
-		NATS: nats.Config{},
+		NATS: nats.Config{
+			Host:     "",
+			Topic:    "",
+			MaxRetry: 4,
+		},
 		Metrics: metrics.Config{
-			Address:   ":8081",
 			Enabled:   true,
 			Subsystem: "jester",
 			Namespace: "snappcloud.io",
