@@ -1,151 +1,57 @@
-version: "3"
+version: "3.9"
 
 services:
-  jaeger:
-    container_name: "jaeger"
-    depends_on:
-      - app
-    image: jaegertracing/all-in-one:latest
+  jetstream:
+    container_name: nats-cluster
+    image: nats:latest
+    entrypoint: /nats-server
     ports:
-      - target: 6831
-        published: 6831
-        protocol: udp
-      - target: 16686
-        published: 16686
-        protocol: tcp
-      - target: 14268
-        published: 14268
-        protocol: tcp
-    networks:
-      - main
+      - "4222:4222"
+    command: --name nats --cluster_name NATS --js --sd /data -p 4222
 
-  app:
-    container_name: "stan-ge-server"
+  agent:
+    container_name: "agent-container"
     build:
+      context: .
       dockerfile: Dockerfile
+    command: agent
+    volumes:
+      - "./config/config.example.yaml:/app/config.yml"
+    ports:
+      - "8080:8080"
     depends_on:
-      - nats-streaming-1
-      - nats-streaming-2
-      - nats-streaming-3
+      - jetstream
     networks:
-      - main
+      - jester
 
-  nats-streaming-1:
-    command:
-      - "--cluster"
-      - "nats://0.0.0.0:6222"
-      - "--cluster_id"
-      - nats-streaming
-      - "--clustered"
-      - "--cluster_bootstrap"
-      - "--cluster_log_path"
-      - /data/log
-      - "--cluster_node_id"
-      - nats-streaming-1
-      - "--cluster_raft_logging"
-      - "--debug"
-      - "--dir"
-      - /data/msg
-      - "--http_port"
-      - "8222"
-      - "--port"
-      - "4222"
-      - "--store"
-      - file
-      - "--stan_debug"
-      - "--hb_interval"
-      - 2s
-      - "--hb_fail_count"
-      - "1"
-      - "--hb_timeout"
-      - 5s
-    image: "nats-streaming:0.17.0"
-    networks:
-      - main
-    ports:
-      - "14222:4222"
-      - "18222:8222"
+  consumer:
+    container_name: "consumer-container"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: consumer
     volumes:
-      - "./nats-streaming-1:/data"
-  nats-streaming-2:
-    command:
-      - "--cluster"
-      - "nats://0.0.0.0:6222"
-      - "--cluster_id"
-      - nats-streaming
-      - "--clustered"
-      - "--cluster_log_path"
-      - /data/log
-      - "--cluster_node_id"
-      - nats-streaming-2
-      - "--cluster_raft_logging"
-      - "--debug"
-      - "--dir"
-      - /data/msg
-      - "--http_port"
-      - "8222"
-      - "--port"
-      - "4222"
-      - "--store"
-      - file
-      - "--stan_debug"
-      - "--routes"
-      - "nats://nats-streaming-1:5222"
-      - "--hb_interval"
-      - 2s
-      - "--hb_fail_count"
-      - "1"
-      - "--hb_timeout"
-      - 5s
-    image: "nats-streaming:0.17.0"
+      - "./config/config.example.yaml:/app/config.yml"
+    depends_on:
+      - agent
     networks:
-      - main
-    ports:
-      - "24222:4222"
-      - "28222:8222"
+      - jester
+
+  publisher:
+    container_name: "consumer-container"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: publisher
     volumes:
-      - "./nats-streaming-2:/data"
-  nats-streaming-3:
-    command:
-      - "--cluster"
-      - "nats://0.0.0.0:6222"
-      - "--cluster_id"
-      - nats-streaming
-      - "--clustered"
-      - "--cluster_log_path"
-      - /data/log
-      - "--cluster_node_id"
-      - nats-streaming-3
-      - "--cluster_raft_logging"
-      - "--debug"
-      - "--dir"
-      - /data/msg
-      - "--http_port"
-      - "8222"
-      - "--port"
-      - "4222"
-      - "--store"
-      - file
-      - "--stan_debug"
-      - "--routes"
-      - "nats://nats-streaming-1:6222"
-      - "--hb_interval"
-      - 2s
-      - "--hb_fail_count"
-      - "1"
-      - "--hb_timeout"
-      - 5s
-    image: "nats-streaming:0.17.0"
+      - "./config/config.example.yaml:/app/config.yml"
+    depends_on:
+      - agent
     networks:
-      - main
-    ports:
-      - "34222:4222"
-      - "38222:8222"
-    volumes:
-      - "./nats-streaming-3:/data"
+      - jester
 
 networks:
-  main:
+  jester:
     driver: bridge
     ipam:
       config:
