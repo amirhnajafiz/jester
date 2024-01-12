@@ -15,6 +15,21 @@ endpoint.
 
 ![](.github/assets/jester.svg)
 
+### events
+
+A list of the events that are being passed to Jester agent:
+
+- New Subscriber
+- Remove Subscriber
+- New Publisher
+- Remove Publisher
+- Publish
+- Consume
+- Publish Failure
+- Failed Connection
+- Retry Per Connection
+- Latency
+
 ## Setup
 
 If you want to test __Jester__, change the config files in ```config``` dir. The example config file
