@@ -29,4 +29,4 @@ WORKDIR /app
 COPY --from=builder /go/src/app/main /app/main
 
 # run
-ENTRYPOINT /app/main
+CMD /app/main
