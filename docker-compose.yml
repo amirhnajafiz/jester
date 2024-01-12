@@ -34,6 +34,20 @@ services:
       ETCD_PEER_KEY_FILE: /srv/etcd-key.pem
       ETCD_PEER_CLIENT_CERT_AUTH: 1
 
+  prometheus:
+    image: prom/prometheus:v2.19.0
+    ports:
+      - "9090:9090"
+    networks:
+      - jester
+    volumes:
+      - prometheus_data:/prometheus
+      - prometheus_config:/fragments
+      - "./config.prometheus.yaml:/etc/prometheus/targets/prometheus.yml"
+    command:
+      - '--config.file=/fragments/complete/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+
   agent:
     container_name: "agent-container"
     build:
@@ -47,6 +61,7 @@ services:
     depends_on:
       - jetstream
       - etcd
+      - prometheus
     networks:
       - jester
 
@@ -75,6 +90,13 @@ services:
       - agent
     networks:
       - jester
+
+volumes:
+  prometheus_data: {}
+  prometheus_config:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
 
 networks:
   jester:
