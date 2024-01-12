@@ -9,6 +9,31 @@ services:
       - "4222:4222"
     command: --name nats --cluster_name NATS --js --sd /data -p 4222
 
+  etcd:
+    image: gcr.io/etcd-development/etcd:v3.2.10
+    restart: always
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    volumes:
+      - ./certs/:/srv/
+    environment:
+      ETCD_NAME: etcd-node
+      ETCDCTL_API: 3
+      ETCD_DEBUG: 1
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: https://etcd:2380
+      ETCD_INITIAL_CLUSTER_STATE: new
+      ETCD_INITIAL_CLUSTER_TOKEN: etcd-ftw
+      ETCD_LISTEN_CLIENT_URLS: https://0.0.0.0:2379
+      ETCD_LISTEN_PEER_URLS: https://0.0.0.0:2380
+      ETCD_ADVERTISE_CLIENT_URLS: http://etcd:2379
+      ETCD_CERT_FILE: /srv/ca.pem
+      ETCD_KEY_FILE: /srv/ca-key.pem
+      ETCD_PEER_TRUSTED_CA_FILE: /srv/ca.pem
+      ETCD_PEER_CERT_FILE: /srv/etcd.pem
+      ETCD_PEER_KEY_FILE: /srv/etcd-key.pem
+      ETCD_PEER_CLIENT_CERT_AUTH: 1
+
   agent:
     container_name: "agent-container"
     build:
@@ -21,6 +46,7 @@ services:
       - "8080:8080"
     depends_on:
       - jetstream
+      - etcd
     networks:
       - jester
 

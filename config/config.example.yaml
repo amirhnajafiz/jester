@@ -1,6 +1,6 @@
 etcd:
   endpoints:
-    - ""
+    - "etcd:2379"
   timeout: 5 # seconds
 http:
   agent: "http://agent:8080"
