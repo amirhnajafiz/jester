@@ -36,12 +36,16 @@ func (h Handler) cover(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte("ok"))
 }
 
-func (h Handler) Register(port int) error {
+func (h Handler) Register(port int, metricsFlag bool) error {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/healthz", h.healthy)
 	mux.HandleFunc("/readyz", h.healthy)
 	mux.HandleFunc("/cover", h.cover)
+
+	if metricsFlag {
+		metrics.NewHandler(mux)
+	}
 
 	server := &http.Server{
 		Addr:    fmt.Sprintf(":%d", port),

@@ -9,30 +9,29 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Agent is responsible for getting publisher and consumer
+// metrics and expose them over an endpoint
 type Agent struct {
 	Cfg config.Config
 }
 
 func (a Agent) Command() *cobra.Command {
 	return &cobra.Command{
-		Use: "agent",
-		Run: func(_ *cobra.Command, _ []string) {
-			a.main()
-		},
+		Use:   "agent",
+		Short: "metrics-server",
+		Long:  "agent is the Jester metrics server",
+		Run:   a.main,
 	}
 }
 
-func (a Agent) main() {
-	// start metrics server
-	metrics.NewServer(a.Cfg.Metrics).Start()
-
+func (a Agent) main(_ *cobra.Command, _ []string) {
 	// register metrics
 	m, err := metrics.New(a.Cfg.Metrics)
 	if err != nil {
 		panic(err)
 	}
 
-	// etcd
+	// open etcd connection
 	e, err := cache.NewCache(a.Cfg.ETCD)
 	if err != nil {
 		panic(err)
@@ -45,7 +44,7 @@ func (a Agent) main() {
 	}
 
 	// start handler
-	if err := h.Register(a.Cfg.HTTP.Port); err != nil {
+	if err := h.Register(a.Cfg.HTTP.Port, a.Cfg.Metrics.Enabled); err != nil {
 		panic(err)
 	}
 }
